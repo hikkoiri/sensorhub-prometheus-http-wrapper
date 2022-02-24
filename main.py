@@ -30,7 +30,7 @@ def index():
     bus = smbus.SMBus(DEVICE_BUS)
     aReceiveBuf = []
     aReceiveBuf.append(0x00)
-    
+
     for i in range(TEMP_REG,HUMAN_DETECT + 1):
         aReceiveBuf.append(bus.read_byte_data(DEVICE_ADDR, i))
 
@@ -67,4 +67,4 @@ def index():
         print("No humans detected!")
     return 'Web App with Python Flask!'
 
-app.run(host='0.0.0.0', port=81)
+app.run(host='0.0.0.0', port=8080)
