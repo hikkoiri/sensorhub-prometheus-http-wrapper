@@ -39,6 +39,8 @@ def index():
     elif aReceiveBuf[STATUS_REG] & 0x02 :
         print("No external temperature sensor!")
     else :
+        off_chip_temp=aReceiveBuf[TEMP_REG]
+        print(off_chip_temp)
         print("Current off-chip sensor temperature = %d Celsius" % aReceiveBuf[TEMP_REG])
 
 
