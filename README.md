@@ -5,6 +5,7 @@
   - [Install dependencies](#install-dependencies)
   - [Run](#run)
   - [Configure as systemd service](#configure-as-systemd-service)
+  - [How to continue from here](#how-to-continue-from-here)
 
 
 ## About 
@@ -33,3 +34,11 @@ sudo systemctl enable sensorhub-prometheus-http-wrapper
 sudo systemctl start sensorhub-prometheus-http-wrapper
 sudo systemctl status sensorhub-prometheus-http-wrapper
 ```
+
+## How to continue from here
+
+Configure a prometheus instance to scrape the endpoint (and optionally push the metrics to Grafana Cloud using `remote_write`). A sample configuration can be found under `sample_prometheus_config.yaml`.
+
+Visualizing all the metrics within Grafana is no biggie, also if you use the provided dashboard template in `grafana-dashboard.json`. It should look like this:
+![Grafana Dashboard](grafana-dashboard-screenshot.png)
+
