@@ -25,7 +25,7 @@ HUMAN_DETECT = 0x0D
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/metrics')
 def index():
     bus = smbus.SMBus(DEVICE_BUS)
     aReceiveBuf = []
