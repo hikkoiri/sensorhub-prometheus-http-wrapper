@@ -39,9 +39,8 @@ def index():
     elif aReceiveBuf[STATUS_REG] & 0x02 :
         print("No external temperature sensor!")
     else :
-        off_chip_temp=aReceiveBuf[TEMP_REG]
-        print(off_chip_temp)
-        print("Current off-chip sensor temperature = %d Celsius" % aReceiveBuf[TEMP_REG])
+        off_chip_temp = aReceiveBuf[TEMP_REG]
+        #print("Current off-chip sensor temperature = %d Celsius" % aReceiveBuf[TEMP_REG])
 
 
     if aReceiveBuf[STATUS_REG] & 0x04 :
@@ -49,24 +48,41 @@ def index():
     elif aReceiveBuf[STATUS_REG] & 0x08 :
         print("Onboard brightness sensor failure!")
     else :
-        print("Current onboard sensor brightness = %d Lux" % (aReceiveBuf[LIGHT_REG_H] << 8 | aReceiveBuf[LIGHT_REG_L]))
+        on_chip_brightness = (aReceiveBuf[LIGHT_REG_H] << 8 | aReceiveBuf[LIGHT_REG_L])
+        #print("Current onboard sensor brightness = %d Lux" % (aReceiveBuf[LIGHT_REG_H] << 8 | aReceiveBuf[LIGHT_REG_L]))
 
-    print("Current onboard sensor temperature = %d Celsius" % aReceiveBuf[ON_BOARD_TEMP_REG])
-    print("Current onboard sensor humidity = %d %%" % aReceiveBuf[ON_BOARD_HUMIDITY_REG])
+    on_chip_temp = aReceiveBuf[ON_BOARD_TEMP_REG]
+    #print("Current onboard sensor temperature = %d Celsius" % aReceiveBuf[ON_BOARD_TEMP_REG])
+    on_chip_humidity = aReceiveBuf[ON_BOARD_HUMIDITY_REG]
+    #print("Current onboard sensor humidity = %d %%" % aReceiveBuf[ON_BOARD_HUMIDITY_REG])
 
     if aReceiveBuf[ON_BOARD_SENSOR_ERROR] != 0 :
         print("Onboard temperature and humidity sensor data may not be up to date!")
 
     if aReceiveBuf[BMP280_STATUS] == 0 :
-        print("Current barometer temperature = %d Celsius" % aReceiveBuf[BMP280_TEMP_REG])
-        print("Current barometer pressure = %d pascal" % (aReceiveBuf[BMP280_PRESSURE_REG_L] | aReceiveBuf[BMP280_PRESSURE_REG_M] << 8 | aReceiveBuf[BMP280_PRESSURE_REG_H] << 16))
+        barometer_temp = aReceiveBuf[BMP280_TEMP_REG]
+        #print("Current barometer temperature = %d Celsius" % aReceiveBuf[BMP280_TEMP_REG])
+        barometer_pressure = (aReceiveBuf[BMP280_PRESSURE_REG_L] | aReceiveBuf[BMP280_PRESSURE_REG_M] << 8 | aReceiveBuf[BMP280_PRESSURE_REG_H] << 16)
+        #print("Current barometer pressure = %d pascal" % (aReceiveBuf[BMP280_PRESSURE_REG_L] | aReceiveBuf[BMP280_PRESSURE_REG_M] << 8 | aReceiveBuf[BMP280_PRESSURE_REG_H] << 16))
     else :
         print("Onboard barometer works abnormally!")
 
-    if aReceiveBuf[HUMAN_DETECT] == 1 :
-        print("Live body detected within 5 seconds!")
-    else:
-        print("No humans detected!")
-    return 'Web App with Python Flask!'
+
+    # not of interest right now
+    #if aReceiveBuf[HUMAN_DETECT] == 1 :
+        #print("Live body detected within 5 seconds!")
+    #else:
+        #print("No humans detected!")
+
+    prometheus_summary = f"""off_chip_temp={off_chip_temp}
+        on_chip_brightness={on_chip_brightness}
+        on_chip_temp={on_chip_temp}
+        on_chip_humidity={on_chip_humidity}
+        barometer_temp={barometer_temp}
+        barometer_pressure={barometer_pressure}
+        """
+    print(prometheus_summary)
+    
+    return prometheus_summary
 
 app.run(host='0.0.0.0', port=8080)
