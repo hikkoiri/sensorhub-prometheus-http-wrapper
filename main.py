@@ -74,14 +74,14 @@ def index():
     #else:
         #print("No humans detected!")
 
-    prometheus_summary = f"""off_chip_temp={off_chip_temp}
-on_chip_brightness={on_chip_brightness}
-on_chip_temp={on_chip_temp}
-on_chip_humidity={on_chip_humidity}
-barometer_temp={barometer_temp}
-barometer_pressure={barometer_pressure}"""
-    print(prometheus_summary)
-    
+    prometheus_summary = f"""off_chip_temp {off_chip_temp}
+on_chip_brightness {on_chip_brightness}
+on_chip_temp {on_chip_temp}
+on_chip_humidity {on_chip_humidity}
+barometer_temp {barometer_temp}
+barometer_pressure {barometer_pressure}
+"""
+    #print(prometheus_summary)
     return prometheus_summary
 
 app.run(host='0.0.0.0', port=8080)
