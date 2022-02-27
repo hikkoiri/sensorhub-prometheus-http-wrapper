@@ -27,6 +27,15 @@ app = Flask(__name__)
 
 @app.route('/metrics')
 def index():
+
+    # prevent 'referenced before assignment' error
+    off_chip_temp = 0
+    on_chip_brightness = 0
+    on_chip_temp = 0
+    on_chip_humidity = 0
+    barometer_temp = 0
+    barometer_pressure = 0
+
     bus = smbus.SMBus(DEVICE_BUS)
     aReceiveBuf = []
     aReceiveBuf.append(0x00)
